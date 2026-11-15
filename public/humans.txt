@@ -1,0 +1,15 @@
+/* TEAM */
+Name: Faust Oswald
+Role: Product Software Engineer
+Location: Cotonou, Benin
+Site: https://faustoswald.com
+Contact: faustfrank370@gmail.com
+Twitter: @OswaldFaust2
+LinkedIn: https://www.linkedin.com/in/faust-oswald/
+GitHub: https://github.com/Oswald-Faust
+
+/* SITE */
+Standards: HTML5, CSS3, ESNext
+Stack: Next.js, React, TypeScript, Tailwind CSS
+Languages: English, French
+Last update: 2026

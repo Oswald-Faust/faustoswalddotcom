@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# admin uploads / local content overrides
+/data/
+!.env.example
+
+# local tooling
+.claude/
+.cursor/

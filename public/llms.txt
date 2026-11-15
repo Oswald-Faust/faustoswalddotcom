@@ -1,0 +1,32 @@
+# Faust Oswald
+
+> Product Software Engineer based in Cotonou, Benin. Builds web apps, mobile apps, SaaS, AI products and infrastructure.
+
+Site: https://faustoswald.com
+Email: faustfrank370@gmail.com
+Cal: https://cal.com/faust-oswald-pvvlde/call-tech
+LinkedIn: https://www.linkedin.com/in/faust-oswald/
+X: https://x.com/OswaldFaust2
+GitHub: https://github.com/Oswald-Faust
+CV: https://faustoswald.com/cv
+
+## Languages
+- English and French (site language switch)
+
+## Offer
+- Product coaching
+- Web development courses & mentoring
+- AI product work without the fog
+- Monthly dedicated development partnership
+- One-off product builds
+
+## Key pages
+- / — portfolio home
+- /projects — selected case studies
+- /blog — notes on building and shipping
+- /cv — curriculum vitae
+
+## Do not index
+- /admin
+- /api
+- /media

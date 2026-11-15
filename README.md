@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# faustoswald.com
 
-## Getting Started
+English rebuild of the Framer site, in code: Next.js 16 (App Router, Cache Components), React 19,
+Tailwind CSS v4, Motion. Includes a private dashboard at `/admin` to edit every piece of content.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev          # http://localhost:3000
+pnpm build && pnpm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy `.env.example` to `.env.local` and set:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Purpose |
+| --- | --- |
+| `ADMIN_PASSWORD` | Password for `/admin` |
+| `ADMIN_SESSION_SECRET` | 32+ random characters used to sign the session cookie (`openssl rand -hex 32`) |
+| `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `CONTENT_WRITE_TOKEN` | Optional: store content in Supabase (see below) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pages
 
-## Learn More
+| Route | Content |
+| --- | --- |
+| `/` | Hero, projects, services, about, pricing, expertise, testimonials, FAQ |
+| `/projects`, `/projects/[slug]` | Project index by category and case studies |
+| `/blog`, `/blog/[slug]` | Articles (markdown-lite body) |
+| `/terms`, `/privacy-policy` | Legal pages (`src/content/legal.ts`) |
+| `/admin` | Dashboard (password protected) |
 
-To learn more about Next.js, take a look at the following resources:
+## How content works
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/content/types.ts` — the content schema.
+- `src/content/default.ts`, `src/content/projects.ts` — the default English content shipped with the code.
+- Saved content — written the first time you save in `/admin`. It is layered on top of the
+  defaults, so fields added later in code keep working with older saved content.
+- Public pages read content through a tagged cache (`getContent`); saving in the dashboard
+  invalidates that tag, so edits are live immediately with no rebuild.
+- Images uploaded from the dashboard are served from `/media/<name>`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The dashboard form is generated from the content shape: add a field to the types and defaults and it
+becomes editable automatically.
 
-## Deploy on Vercel
+### Where content is stored
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Two drivers, chosen from the environment (`src/lib/content.ts`):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Driver | When | Stores |
+| --- | --- | --- |
+| Supabase | `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` are set | `public.site_content` (one JSON row) and `public.site_media` (uploads, 4 MB max) |
+| Local file | otherwise | `data/content.json` and `data/uploads` (needs a writable disk) |
+
+Supabase is what makes the dashboard work on read-only hosts such as Vercel. The schema is in
+`supabase/migrations`. Reads are public; writes go through two database functions that require
+`CONTENT_WRITE_TOKEN`, a server-only secret whose SHA-256 hash is stored in `public.site_secrets`
+(no service-role key is needed in the app). To rotate it, generate a new token, update the env var,
+and replace the hash:
+
+```bash
+printf '%s' "$CONTENT_WRITE_TOKEN" | shasum -a 256
+```
+
+If Supabase is unreachable, public pages fall back to the content bundled in the code and retry
+within minutes; the dashboard refuses to open rather than risk overwriting real content.
+
+When deploying, set these on the host: `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `SUPABASE_URL`,
+`SUPABASE_PUBLISHABLE_KEY`, `CONTENT_WRITE_TOKEN`.
+
+## Design system
+
+Tokens and the type scale live in `src/app/globals.css` (`t-display`, `t-h2`, `t-lead`, …, `shell`).
+They were measured from the original Framer build: Switzer, a 1080px column with guide lines,
+`#fafafa` background, 128px section rhythm.
