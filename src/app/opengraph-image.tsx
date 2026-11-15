@@ -17,52 +17,68 @@ export default async function OpenGraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "64px",
-          background: "#050505",
+          padding: 64,
+          backgroundColor: "#050505",
           color: "#ffffff",
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
         }}
       >
         <div
           style={{
             display: "flex",
+            flexDirection: "row",
             alignItems: "center",
-            gap: 18,
-            fontSize: 28,
-            fontWeight: 600,
-            letterSpacing: "-0.02em",
           }}
         >
           <div
             style={{
               width: 56,
               height: 56,
-              borderRadius: 999,
-              background: "#222",
+              borderRadius: 28,
+              backgroundColor: "#222222",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 24,
+              fontSize: 22,
+              fontWeight: 700,
+              marginRight: 18,
             }}
           >
             FO
           </div>
-          {settings.name}
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 980 }}>
           <div
             style={{
-              fontSize: 68,
-              fontWeight: 560,
-              lineHeight: 1.02,
+              display: "flex",
+              fontSize: 28,
+              fontWeight: 600,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {settings.name}
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: 980,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              fontSize: 64,
+              fontWeight: 600,
+              lineHeight: 1.05,
               letterSpacing: "-0.04em",
+              marginBottom: 18,
             }}
           >
             Building products that pay off.
           </div>
           <div
             style={{
+              display: "flex",
               fontSize: 28,
               color: "#b8b8b8",
               lineHeight: 1.35,
@@ -70,13 +86,14 @@ export default async function OpenGraphImage() {
               maxWidth: 820,
             }}
           >
-            {settings.role} · {settings.city} · Web, mobile, SaaS & AI
+            {`${settings.role} · ${settings.city} · Web, mobile, SaaS & AI`}
           </div>
         </div>
 
         <div
           style={{
             display: "flex",
+            flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             fontSize: 22,
@@ -84,11 +101,11 @@ export default async function OpenGraphImage() {
             letterSpacing: "-0.01em",
           }}
         >
-          <span>faustoswald.com</span>
-          <span>Awwwards Young Jury</span>
+          <div style={{ display: "flex" }}>faustoswald.com</div>
+          <div style={{ display: "flex" }}>Awwwards Young Jury</div>
         </div>
       </div>
     ),
-    size,
+    { ...size },
   );
 }
